@@ -1,7 +1,6 @@
 // src/app/tarefas/layout.tsx
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import UserMenu from '@/components/user-menu';
 
 export default function TarefasLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,7 +18,6 @@ export default function TarefasLayout({ children }: { children: React.ReactNode 
                 </Link>
                 {/* Adicione mais links de navegação aqui conforme necessário */}
               </nav>
-              <UserMenu />
             </div>
           </div>
         </div>

@@ -1,32 +1,47 @@
-// prisma/seed.ts
 import { PrismaClient } from '@prisma/client';
 import * as crypto from 'crypto';
 
 const prisma = new PrismaClient();
 
-// Função simples para hash da senha (em produção use bcrypt)
-function hashSenha(senha: string): string {
-  return crypto.createHash('sha256').update(senha).digest('hex');
+function hashPassword(password: string): string {
+  return crypto.createHash('sha256').update(password).digest('hex');
 }
 
 async function main() {
-  // Verificar se o usuário admin já existe
-  const adminExistente = await prisma.usuario.findUnique({
-    where: { email: 'admin@exemplo.com' }
+  const existingAdmin = await prisma.user.findUnique({
+    where: { email: 'admin@admin.com' }
   });
 
-  if (!adminExistente) {
-    await prisma.usuario.create({
+  if (!existingAdmin) {
+    await prisma.user.create({
       data: {
-        email: 'admin@exemplo.com',
-        senha: hashSenha('admin123'),
-        nome: 'Administrador',
-        role: 'admin'
+        email: 'admin@admin.com',
+        password: hashPassword('admin123'),
+        name: 'Administrador',
+        role: 'ADMIN'
       }
     });
     console.log('Usuário admin criado com sucesso!');
   } else {
     console.log('Usuário admin já existe.');
+  }
+
+  const existingUser = await prisma.user.findUnique({
+    where: { email: 'usuario@usuario.com' }
+  });
+
+  if (!existingUser) {
+    await prisma.user.create({
+      data: {
+        email: 'usuario@usuario.com',
+        password: hashPassword('usuario123'),
+        name: 'Usuário Padrão',
+        role: 'USER'
+      }
+    });
+    console.log('Usuário padrão criado com sucesso!');
+  } else {
+    console.log('Usuário padrão já existe.');
   }
 }
 

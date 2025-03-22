@@ -7,22 +7,105 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model Usuario {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  senha     String
-  nome      String
-  role      String   @default("user")
-  criadoEm  DateTime @default(now())
-  tarefas   Tarefa[]
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          UserRole  @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
-model Tarefa {
-  id        Int      @id @default(autoincrement())
-  titulo    String
-  descricao String?
-  concluida Boolean  @default(false)
-  criadaEm  DateTime @default(now())
-  usuarioId Int
-  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model BatchRequest {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  requests  Request[]
+}
+
+model Request {
+  id           String   @id @default(uuid())
+  squad        String
+  requester    String
+  releaseNotes String
+  azureLink    String
+  observation  String?
+  type         RequestType
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  // Relacionamentos
+  tags         Tag[]    @relation("RequestTags")
+  batchRequest BatchRequest? @relation(fields: [batchRequestId], references: [id])
+  batchRequestId String?
+  
+  // Relacionamentos para solicitações específicas
+  scriptSolicitation ScriptSolicitation? @relation(fields: [scriptSolicitationId], references: [id])
+  scriptSolicitationId String?
+  
+  buildSolicitation BuildSolicitation? @relation(fields: [buildSolicitationId], references: [id])
+  buildSolicitationId String?
+}
+
+model ScriptSolicitation {
+  id         String @id @default(uuid())
+  scriptLink String
+  objectName String
+  status     ScriptStatus @default(PENDING)
+  
+  // Relacionamento com Request
+  requests   Request[]
+}
+
+model BuildSolicitation {
+  id              String @id @default(uuid())
+  buildLink       String
+  application     String
+  rollbackBuild   String
+  status          BuildStatus @default(PENDING)
+  
+  // Relacionamento com Request
+  requests        Request[]
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  
+  // Relacionamentos
+  requests  Request[] @relation("RequestTags")
+  sacTi     SacTi?    @relation(fields: [sacTiId], references: [id])
+  sacTiId   String?
+}
+
+model SacTi {
+  id        String   @id @default(uuid())
+  sacNumber String   @unique
+  context   String
+  createdAt DateTime @default(now())
+
+  // Relacionamento com Tag
+  tags      Tag[]
+}
+
+enum RequestType {
+  SCRIPT
+  BUILD
+}
+
+enum ScriptStatus {
+  PENDING
+  SENT
+}
+
+enum BuildStatus {
+  PENDING
+  APPROVED
 }
