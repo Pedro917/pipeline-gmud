@@ -26,6 +26,10 @@ model BatchRequest {
   id        String    @id @default(uuid())
   name      String
   createdAt DateTime  @default(now())
+  isWeekly  Boolean   @default(false)
+  scheduledDate DateTime?
+  sacTi String
+  type      RequestType
   requests  Request[]
 }
 
@@ -78,21 +82,10 @@ model Tag {
   id        String   @id @default(uuid())
   name      String   @unique
   createdAt DateTime @default(now())
+  isActive Boolean  @default(true)
   
   // Relacionamentos
   requests  Request[] @relation("RequestTags")
-  sacTi     SacTi?    @relation(fields: [sacTiId], references: [id])
-  sacTiId   String?
-}
-
-model SacTi {
-  id        String   @id @default(uuid())
-  sacNumber String   @unique
-  context   String
-  createdAt DateTime @default(now())
-
-  // Relacionamento com Tag
-  tags      Tag[]
 }
 
 enum RequestType {

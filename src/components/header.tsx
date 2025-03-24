@@ -19,17 +19,17 @@ export function Header() {
         <Separator orientation="vertical" className="h-6" />
 
         <nav className="flex items-center space-x-4 lg:space-x-6">
-          <Link href={'/'} className='flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground data-[current=true]:text-foreground'>
+          <Link href={'/requests/builds'} className='flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground data-[current=true]:text-foreground'>
             <Wrench className="h-4 w-4" />
             Builds/Releases
           </Link>
 
-          <Link href={'/'} className='flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground data-[current=true]:text-foreground'>
+          <Link href={'/requests/scripts'} className='flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground data-[current=true]:text-foreground'>
             <FileCode className="h-4 w-4" />
             Scripts/Objetos
           </Link>
 
-          <Link href={'/'} className='flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground data-[current=true]:text-foreground'>
+          <Link href={'/publications'} className='flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground data-[current=true]:text-foreground'>
             <Rocket className="h-4 w-4" />
             Publicações
           </Link>

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
-import { verify } from "jsonwebtoken"
 
 const publicRoutes = ["/login", "/api/auth/login"]
 
